@@ -11,15 +11,19 @@
 .device-table th {
     background-color: #f2f2f2;
     color: black;
+    font-weight: bold;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-.device-table th, .device-table td {
-    padding: 8px;
+.device-table td {
+    padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 .device-table tr:hover {
     background-color: #f2f2f2;
+    transition: background-color 0.3s ease;
 }
-

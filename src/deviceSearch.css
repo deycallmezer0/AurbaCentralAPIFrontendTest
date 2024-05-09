@@ -1,12 +1,27 @@
 .device-search {
-    background-color: red;
+    background-color: var(--light-gray);
     display: flex;
     flex-direction: column;
-    align-content: center;
     align-items: center;
-  }
+    justify-content: center;
+    gap: var(--xxs);
+}
 
-  .console {
-    height: 200px; /* Adjust this value to your needs */
+.console {
+    height: 200px;
     overflow-y: auto;
-  }
+    scrollbar-width: thin;
+    scrollbar-color: var(--light-gray) var(--dark-gray);
+}
+
+.status-tables {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-collapse: collapse;
+    gap: var(--xs);
+}
+
+

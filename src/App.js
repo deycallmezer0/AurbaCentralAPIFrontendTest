@@ -1,11 +1,11 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ErrorBoundary from './components/ErrorBoundary';
-import Home from './pages/Home';
-import Search from './pages/Search';
-import Settings from './pages/Settings';
-const NavBar = React.lazy(() => import('./components/NavBar'));
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundary";
+import Home from "./pages/Home";
+import Search from "./pages/Search";
+import Settings from "./pages/Settings";
+const NavBar = React.lazy(() => import("./components/NavBar"));
 
 export default function App() {
   return (
