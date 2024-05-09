@@ -1,0 +1,25 @@
+.device-table {
+    background-color: green;
+}
+
+/* Style the table */
+.device-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.device-table th {
+    background-color: #f2f2f2;
+    color: black;
+}
+
+.device-table th, .device-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.device-table tr:hover {
+    background-color: #f2f2f2;
+}
+

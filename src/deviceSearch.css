@@ -1,0 +1,12 @@
+.device-search {
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
+
+  .console {
+    height: 200px; /* Adjust this value to your needs */
+    overflow-y: auto;
+  }
