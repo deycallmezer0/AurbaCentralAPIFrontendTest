@@ -1,7 +1,7 @@
 import React from "react";
 import DeviceTable from "./DeviceTable";
 import "./deviceSearch.css";
-
+// TODO fix duplicate serials being added to list when researching
 class DeviceSearch extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +14,7 @@ class DeviceSearch extends React.Component {
       searching: [],
       searchTime: 0,
       countdown: null,
-      group: "", // Added group to state
+      group: "FD-Pilot", // Added group to state
       updatedCount: 0,
       totalDevices: 0,
       isSearching: false,
@@ -108,7 +108,7 @@ class DeviceSearch extends React.Component {
       return;
     }
 
-    fetch(`http://localhost:5001/api/move-to-group`, {
+    fetch(`http://localhost:5000/api/move-to-group`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +141,7 @@ class DeviceSearch extends React.Component {
   };
 
   startCountdown = () => {
-    this.setState({ countdown: 6 * 1 }); // Set the countdown to 6 minutes
+    this.setState({ countdown: 6 * 60 }); // Set the countdown to 6 minutes
     this.countdownInterval = setInterval(() => {
       this.setState((prevState) => {
         if (prevState.countdown <= 1) {
@@ -161,6 +161,7 @@ class DeviceSearch extends React.Component {
   };
 
   handleSearch = () => {
+    console.log("Searching for devices");
     if (this.state.isSearching) {
       return; // Exit if a search is already in progress
     }
@@ -182,7 +183,7 @@ class DeviceSearch extends React.Component {
 
     const searchPromises = uniqueQueries.map((query) => {
       return (
-        fetch(`http://localhost:5001/api/search`, {
+        fetch(`http://localhost:5000/api/search`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -256,16 +257,6 @@ class DeviceSearch extends React.Component {
             <textarea
               value={this.state.searchQuery}
               onChange={this.handleSearchQueryChange}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Enter group name:
-            <input
-              type="text"
-              value={this.state.group}
-              onChange={this.handleGroupChange}
             />
           </label>
         </div>

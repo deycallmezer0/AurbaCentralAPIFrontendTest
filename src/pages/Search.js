@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DeviceSearch from "../DeviceSearch";
-import { useState } from "react";
+
 const fetchTokens = async (refreshToken, accessToken) => {
   console.log("Fetching tokens");
-  const response = await fetch("http://localhost:5001/api/token", {
+  const response = await fetch("http://localhost:5000/api/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,12 +22,12 @@ const fetchTokens = async (refreshToken, accessToken) => {
   return response.json();
 };
 
-// Read tokens from local storage
 const getSavedTokens = () => {
   const refreshToken = localStorage.getItem("refresh_token");
   const accessToken = localStorage.getItem("access_token");
   return { refresh_token: refreshToken, access_token: accessToken };
 };
+
 function Search() {
   const [tokens, setTokens] = useState(getSavedTokens());
   const [consoleMessages, setConsoleMessages] = useState([]);
@@ -39,11 +39,13 @@ function Search() {
       consoleRef.current.scrollTop = consoleRef.current.scrollHeight;
     }
   }, [consoleMessages]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(scrollToBottom, [consoleMessages]);
+
   const addConsoleMessage = (message) => {
     setConsoleMessages((prevMessages) => [...prevMessages, message]);
   };
@@ -52,7 +54,6 @@ function Search() {
     setConsoleMessages([]);
   };
 
-  // If tokens exist, extract refresh and access tokens
   let refreshToken, accessToken;
   if (tokens) {
     try {
@@ -72,24 +73,33 @@ function Search() {
     localStorage.setItem("access_token", newTokens.access_token);
     localStorage.setItem("refresh_token", newTokens.refresh_token);
   };
-  const searchForDevices = async () => {
+
+  const searchForDevices = async (serial) => {
     console.log("Searching for devices");
-    const response = await fetch("http://localhost:5000/api/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        refresh_token: refreshToken,
-        access_token: accessToken,
-      }),
-    });
+    try {
+      const response = await fetch("http://localhost:5000/api/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          refresh_token: refreshToken,
+          access_token: accessToken,
+          serial: serial, // Add serial to the request body
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      addConsoleMessage(JSON.stringify(data, null, 2));
+      return data;
+    } catch (error) {
+      console.error("Error searching for devices:", error);
+      addConsoleMessage(`Error: ${error.message}`);
     }
-
-    return response.json();
   };
 
   return (
@@ -117,6 +127,7 @@ function Search() {
         addConsoleMessage={addConsoleMessage}
         clearConsoleMessages={clearConsoleMessages}
       />
+      <div ref={messagesEndRef}></div>
     </div>
   );
 }
